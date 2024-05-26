@@ -37,16 +37,93 @@
 #
 
 ### 모델 학습 결과
-1) CharRNN
+#### 1) CharRNN
     input_file = 'shakespeare_train.txt'  
     batch_size = 128  
     hidden_size = 256  
     num_layers = 2  
     learning_rate = 0.001  
     num_epochs = 20
+
+    Epoch 1, Train Loss: 2.5935, Validation Loss: 2.1706  
+    Epoch 2, Train Loss: 2.0706, Validation Loss: 1.9588  
+    Epoch 3, Train Loss: 1.9171, Validation Loss: 1.8457  
+    Epoch 4, Train Loss: 1.8248, Validation Loss: 1.7686  
+    Epoch 5, Train Loss: 1.7626, Validation Loss: 1.7197  
+    Epoch 6, Train Loss: 1.7172, Validation Loss: 1.6860  
+    Epoch 7, Train Loss: 1.6802, Validation Loss: 1.6536  
+    Epoch 8, Train Loss: 1.6522, Validation Loss: 1.6325  
+    Epoch 9, Train Loss: 1.6276, Validation Loss: 1.6135  
+    Epoch 10, Train Loss: 1.6040, Validation Loss: 1.5940
    
- 
-3)
-   
-  
+ ![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/caae0dfb-e771-4093-b42a-9f6469233a4f)
+
+#### 2) CharLSTM
+    input_file = 'shakespeare_train.txt'  
+    batch_size = 128  
+    hidden_size = 256  
+    num_layers = 2  
+    learning_rate = 0.001  
+    num_epochs = 10
+    
+    Epoch 1, Train Loss: 3.0445, Validation Loss: 2.4835  
+    Epoch 2, Train Loss: 2.2962, Validation Loss: 2.1407  
+    Epoch 3, Train Loss: 2.0608, Validation Loss: 1.9608  
+    Epoch 4, Train Loss: 1.9191, Validation Loss: 1.8485  
+    Epoch 5, Train Loss: 1.8276, Validation Loss: 1.7768  
+    Epoch 6, Train Loss: 1.7598, Validation Loss: 1.7195  
+    Epoch 7, Train Loss: 1.7097, Validation Loss: 1.6775  
+    Epoch 8, Train Loss: 1.6687, Validation Loss: 1.6484  
+    Epoch 9, Train Loss: 1.6350, Validation Loss: 1.6232  
+    Epoch 10, Train Loss: 1.6051, Validation Loss: 1.6000  
+
+   ![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/55090548-cd8d-48c3-9cc1-d78e2791e97c)
+
+
+
+### generate.py
+#### 1) CharRNN 결과
+
+Temperature: 0.5
+Generated Text:
+To be, or not to be, that is the question:
+What is swords:
+How shall the stain the son, he cannot the return of my lord, and with deeds, and t
+
+Temperature: 1.0
+Generated Text:
+To be, or not to be, that is the question:
+But of mar,
+On the mothers spows,
+To us, but, them officions, our kided,
+Now to seft again, y.
+
+COR
+
+Temperature: 1.5
+Generated Text:
+To be, or not to be, that is the question: Premfepreat the haster
+Hop. are have moke
+I worchuets.
+
+Varcius; your hing
+All as,
+ds blious two,
+W
+
+
+- Temperature: 0.5
+생성된 텍스트는 원래 텍스트와 매우 유사하고 일관성이 높습니다. 그러나, 창의성이 떨어지고 단어와 표현이 반복되는 경향이 있습니다.
+
+- Temperature: 1.0
+텍스트가 적절한 다양성과 일관성을 유지하고 있습니다. 문장은 온도 0.5보다 덜 예측 가능하며, 더 창의적입니다. 이 값은 텍스트 생성에서 일반적으로 가장 좋은 결과를 낳는 온도입니다.
+
+- Temperature: 1.5
+텍스트가 매우 창의적이지만, 일관성이나 논리성이 떨어집니다. 단어들이 무작위로 보이며, 실제로 의미 있는 문장을 형성하지 못합니다.
+
+- 결론
+온도 1.0이 가장 좋은 결과를 제공합니다. 이는 생성된 텍스트가 적절한 다양성과 일관성을 유지하면서도 창의적이기 때문입니다. 온도 0.5는 너무 예측 가능하고 반복적이며, 온도 1.5는 너무 불규칙하고 비논리적입니다.
+
+#### 2) CharLSTM 결
+
 이 과제에서는 Shakespeare 데이터셋을 사용하여 문자 단위 언어 모델을 구축하고, vanilla RNN과 LSTM의 성능을 비교하며, 다양한 온도로 문자를 생성해보는 경험을 합니다. 이를 통해 언어 모델의 작동 원리를 이해하고, 모델의 성능을 개선하는 방법을 학습할 수 있습니다.
