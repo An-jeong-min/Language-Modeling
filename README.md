@@ -34,7 +34,7 @@
 
 #
 ### 3) 모델 학습 결과
-#### A. CharRNN
+#### A. CharRNN 결과
     input_file = 'shakespeare_train.txt'  
     batch_size = 128  
     hidden_size = 256  
@@ -56,7 +56,7 @@
 ![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/caae0dfb-e771-4093-b42a-9f6469233a4f)
 
 
-#### B. CharLSTM
+#### B. CharLSTM 결과
     input_file = 'shakespeare_train.txt'  
     batch_size = 128  
     hidden_size = 256  
