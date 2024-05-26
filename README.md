@@ -86,9 +86,9 @@
 
 - Temperature: 0.5
 
-" To be, or not to be, that is the question:  
-What is swords:  
-How shall the stain the son, he cannot the return of my lord, and with deeds, and t"  
+> " To be, or not to be, that is the question:  
+> What is swords:  
+> How shall the stain the son, he cannot the return of my lord, and with deeds, and t"  
 
 생성된 텍스트는 원래 텍스트와 매우 유사하고 일관성이 높습니다. 그러나, 창의성이 떨어지고 단어와 표현이 반복되는 경향이 있습니다.
 
