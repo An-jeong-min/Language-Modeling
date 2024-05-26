@@ -2,107 +2,196 @@
 ## 기계정보공학과 24510091 안정민
 ## main.py
 
+import os
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
+
 import torch
-import torch.nn as nn
 import torch.optim as optim
+import torch.nn as nn
 from torch.utils.data import DataLoader, SubsetRandomSampler
+import numpy as np
 import dataset
 from model import CharRNN, CharLSTM
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from tqdm import tqdm
 
+# =============================================================================
+## CharRNN
+# def train(model, trn_loader, device, criterion, optimizer):
+#     model.train()
+#     trn_loss = 0
+#     
+#     for inputs, targets in trn_loader:
+#         inputs, targets = inputs.to(device), targets.to(device)
+#         optimizer.zero_grad()
+#         hidden = model.init_hidden(inputs.size(0)).to(device)
+#         outputs, hidden = model(inputs, hidden)
+#         loss = criterion(outputs, targets.view(-1))
+#         loss.backward()
+#         optimizer.step()
+#         trn_loss += loss.item()
+#     
+#     return trn_loss / len(trn_loader)
+# =============================================================================
+
+## CharLSTM
 def train(model, trn_loader, device, criterion, optimizer):
     model.train()
-    total_loss = 0
+    trn_loss = 0
+    
     for inputs, targets in trn_loader:
         inputs, targets = inputs.to(device), targets.to(device)
-        
         optimizer.zero_grad()
-        output, hidden = model(inputs, model.init_hidden(inputs.size(0), device))
-        loss = criterion(output, targets.view(-1))
+        hidden = model.init_hidden(inputs.size(0))
+        outputs, hidden = model(inputs, hidden)
+        loss = criterion(outputs, targets.view(-1))
         loss.backward()
         optimizer.step()
-        
-        total_loss += loss.item()
+        trn_loss += loss.item()
     
-    trn_loss = total_loss / len(trn_loader)
-    return trn_loss
+    return trn_loss / len(trn_loader)
 
+
+
+# =============================================================================
+## CharRNN
+# def validate(model, val_loader, device, criterion):
+#     model.eval()
+#     val_loss = 0
+#     
+#     with torch.no_grad():
+#         for inputs, targets in val_loader:
+#             inputs, targets = inputs.to(device), targets.to(device)
+#             hidden = model.init_hidden(inputs.size(0)).to(device)
+#             outputs, hidden = model(inputs, hidden)
+#             loss = criterion(outputs, targets.view(-1))
+#             val_loss += loss.item()
+#     
+#     return val_loss / len(val_loader)
+# =============================================================================
+
+## CharLSTM
 def validate(model, val_loader, device, criterion):
     model.eval()
-    total_loss = 0
+    val_loss = 0
+    
     with torch.no_grad():
         for inputs, targets in val_loader:
             inputs, targets = inputs.to(device), targets.to(device)
-            
-            output, hidden = model(inputs, model.init_hidden(inputs.size(0), device))
-            loss = criterion(output, targets.view(-1))
-            
-            total_loss += loss.item()
+            hidden = model.init_hidden(inputs.size(0))  # init_hidden에서 device 설정 필요 없음
+            outputs, hidden = model(inputs, hidden)
+            loss = criterion(outputs, targets.view(-1))
+            val_loss += loss.item()
     
-    val_loss = total_loss / len(val_loader)
-    return val_loss
+    return val_loss / len(val_loader)
+
+# =============================================================================
+# ## charRNN
+# def main():
+#     input_file = 'shakespeare_train.txt'
+#     batch_size = 128
+#     hidden_size = 256
+#     num_layers = 2
+#     learning_rate = 0.001
+#     num_epochs = 10
+# 
+#     dataset_obj = dataset.Shakespeare(input_file)
+#     dataset_size = len(dataset_obj)
+#     indices = list(range(dataset_size))
+#     split = int(np.floor(0.2 * dataset_size))
+#     np.random.shuffle(indices)
+#     train_indices, val_indices = indices[split:], indices[:split]
+# 
+#     train_sampler = SubsetRandomSampler(train_indices)
+#     val_sampler = SubsetRandomSampler(val_indices)
+# 
+#     train_loader = DataLoader(dataset_obj, batch_size=batch_size, sampler=train_sampler)
+#     val_loader = DataLoader(dataset_obj, batch_size=batch_size, sampler=val_sampler)
+# 
+#     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+#     model = CharLSTM(len(dataset_obj.chars), hidden_size, num_layers).to(device)
+# 
+#     criterion = nn.CrossEntropyLoss()
+#     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+#     
+#     train_losses = []
+#     val_losses = []
+# 
+#     for epoch in range(num_epochs):
+#         trn_loss = train(model, train_loader, device, criterion, optimizer)
+#         val_loss = validate(model, val_loader, device, criterion)
+#         
+#         train_losses.append(trn_loss)
+#         val_losses.append(val_loss)
+#         
+#         print(f'Epoch {epoch+1}, Train Loss: {trn_loss:.4f}, Validation Loss: {val_loss:.4f}')
+# 
+#     # 로스 그래프 그리기
+#     plt.figure()
+#     plt.plot(train_losses, label='Training Loss')
+#     plt.plot(val_losses, label='Validation Loss')
+#     plt.xlabel('Epochs')
+#     plt.ylabel('Loss')
+#     plt.title('Training and Validation Loss')
+#     plt.legend()
+#     plt.show()
+# 
+#     torch.save(model.state_dict(), 'CharLSTM.pth')
+# =============================================================================
+
+
 
 def main():
-    batch_size = 32
-    seq_length = 30
-    hidden_size = 128
-    num_layers = 6
+    input_file = 'shakespeare_train.txt'
+    batch_size = 128
+    hidden_size = 256
+    num_layers = 2
+    learning_rate = 0.001
     num_epochs = 10
-    learning_rate = 0.002
-    model_type = 'lstm'  # 'rnn' or 'lstm'
-    device = torch.device('cpu') 
 
-    # Load dataset
-    dataset_path = 'shakespeare_train.txt'
-    shakespeare_dataset = dataset.Shakespeare(dataset_path)
-
-    # Split data into training and validation sets
-    dataset_size = len(shakespeare_dataset)
+    dataset_obj = dataset.Shakespeare(input_file)
+    dataset_size = len(dataset_obj)
     indices = list(range(dataset_size))
-    train_indices, val_indices = train_test_split(indices, test_size=0.2, random_state=42)
+    split = int(np.floor(0.2 * dataset_size))
+    np.random.shuffle(indices)
+    train_indices, val_indices = indices[split:], indices[:split]
 
     train_sampler = SubsetRandomSampler(train_indices)
     val_sampler = SubsetRandomSampler(val_indices)
 
-    train_loader = DataLoader(shakespeare_dataset, batch_size=batch_size, sampler=train_sampler)
-    val_loader = DataLoader(shakespeare_dataset, batch_size=batch_size, sampler=val_sampler)
+    train_loader = DataLoader(dataset_obj, batch_size=batch_size, sampler=train_sampler)
+    val_loader = DataLoader(dataset_obj, batch_size=batch_size, sampler=val_sampler)
 
-    input_size = len(shakespeare_dataset.chars)
-    output_size = input_size
-
-    if model_type == 'rnn':
-        model = CharRNN(input_size, hidden_size, output_size, num_layers).to(device)
-    else:
-        model = CharLSTM(input_size, hidden_size, output_size, num_layers).to(device)
-
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = CharLSTM(len(dataset_obj.chars), hidden_size, num_layers).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-
+    
     train_losses = []
     val_losses = []
 
-    for epoch in tqdm(range(num_epochs), desc='Epochs'):
+    for epoch in range(num_epochs):
         trn_loss = train(model, train_loader, device, criterion, optimizer)
         val_loss = validate(model, val_loader, device, criterion)
-
+        
         train_losses.append(trn_loss)
         val_losses.append(val_loss)
+        
+        print(f'Epoch {epoch+1}, Train Loss: {trn_loss:.4f}, Validation Loss: {val_loss:.4f}')
 
-        print(f'Epoch {epoch+1}/{num_epochs}, Training Loss: {trn_loss:.4f}, Validation Loss: {val_loss:.4f}')
-
+    # 로스 그래프 그리기
     plt.figure()
     plt.plot(train_losses, label='Training Loss')
     plt.plot(val_losses, label='Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.title('Training and Validation Loss')
     plt.legend()
     plt.show()
+
+    torch.save(model.state_dict(), 'CharLSTM.pth')
+
 
 if __name__ == '__main__':
     main()
 
 
-# 모델 학습이 완료된 후에 모델 가중치 저장
-model_path = 'model.pth'
-torch.save(model.state_dict(), model_path)
-print(f"Model saved to {model_path}")

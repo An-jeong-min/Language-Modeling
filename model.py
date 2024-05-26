@@ -2,46 +2,51 @@
 ## 기계정보공학과 24510091 안정민
 ## model.py
 
-
 import torch
 import torch.nn as nn
 
+
+
 class CharRNN(nn.Module):
-    """ Vanilla RNN Model """
-    def __init__(self, vocab_size, hidden_dim, n_layers):
+    
+    def __init__(self, vocab_size, hidden_size, num_layers, dropout=0.2):
         super(CharRNN, self).__init__()
-        self.hidden_dim = hidden_dim
-        self.n_layers = n_layers
-        self.embed = nn.Embedding(vocab_size, hidden_dim)
-        self.rnn = nn.RNN(hidden_dim, hidden_dim, n_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_dim, vocab_size)
+        self.hidden_size = hidden_size
+        self.num_layers = num_layers
+        self.embedding = nn.Embedding(vocab_size, hidden_size)
+        self.rnn = nn.RNN(hidden_size, hidden_size, num_layers, dropout=dropout, batch_first=True)
+        self.fc = nn.Linear(hidden_size, vocab_size)
 
-    def forward(self, x, hidden):
-        x = self.embed(x)
-        out, hidden = self.rnn(x, hidden)
-        out = self.fc(out.reshape(out.size(0) * out.size(1), out.size(2)))
-        return out, hidden
+    def forward(self, input, hidden):
+        embedded = self.embedding(input)
+        output, hidden = self.rnn(embedded, hidden)
+        output = self.fc(output.reshape(output.size(0) * output.size(1), output.size(2)))
+        return output, hidden
 
-    def init_hidden(self, batch_size, device):
-        return torch.zeros(self.n_layers, batch_size, self.hidden_dim).to(device)
+    def init_hidden(self, batch_size):
+        return torch.zeros(self.num_layers, batch_size, self.hidden_size)
+
+
 
 class CharLSTM(nn.Module):
-    """ LSTM Model """
-    def __init__(self, vocab_size, hidden_dim, output_size, n_layers):  # 수정된 생성자
+    
+    def __init__(self, vocab_size, hidden_size, num_layers, dropout=0.2):
         super(CharLSTM, self).__init__()
-        self.hidden_dim = hidden_dim
-        self.n_layers = n_layers
-        self.embed = nn.Embedding(vocab_size, hidden_dim)
-        self.lstm = nn.LSTM(hidden_dim, hidden_dim, n_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_dim, output_size)  # 수정된 output_size
+        self.hidden_size = hidden_size
+        self.num_layers = num_layers
+        self.embedding = nn.Embedding(vocab_size, hidden_size)
+        self.lstm = nn.LSTM(hidden_size, hidden_size, num_layers, dropout=dropout, batch_first=True)
+        self.fc = nn.Linear(hidden_size, vocab_size)
 
-    def forward(self, x, hidden):
-        x = self.embed(x)
-        out, hidden = self.lstm(x, hidden)
-        out = self.fc(out.reshape(out.size(0) * out.size(1), out.size(2)))
-        return out, hidden
+    def forward(self, input, hidden):
+        embedded = self.embedding(input)
+        output, hidden = self.lstm(embedded, hidden)
+        output = self.fc(output.reshape(output.size(0) * output.size(1), output.size(2)))
+        return output, hidden
 
-    def init_hidden(self, batch_size, device):
-        device = next(self.parameters()).device
-        return (torch.zeros(self.n_layers, batch_size, self.hidden_dim).to(device), 
-                torch.zeros(self.n_layers, batch_size, self.hidden_dim).to(device))
+    def init_hidden(self, batch_size):
+        h_0 = torch.zeros(self.num_layers, batch_size, self.hidden_size)
+        c_0 = torch.zeros(self.num_layers, batch_size, self.hidden_size)
+        return (h_0, c_0)
+    
+

@@ -5,8 +5,11 @@
 import torch
 from torch.utils.data import Dataset
 
+
+
 class Shakespeare(Dataset):
-    """ Shakespeare dataset
+    
+    """Shakespeare dataset
 
     Args:
         input_file: txt file
@@ -15,50 +18,38 @@ class Shakespeare(Dataset):
         1) Load input file and construct character dictionary {index:character}.
            You need this dictionary to generate characters.
         2) Make list of character indices using the dictionary
-        3) Split the data into chunks of sequence length 30.
+        3) Split the data into chunks of sequence length 30. 
            You should create targets appropriately.
     """
-
+    
+    ## 입력 파일 로드 및 문자 딕셔너리 생성
     def __init__(self, input_file):
-        # Load input file
-        with open(input_file, 'r') as f:
+        with open(input_file, 'r', encoding='utf-8') as f:
             self.text = f.read()
-
-        # Create a dictionary of unique characters
-        self.chars = sorted(list(set(self.text)))
-        self.char_to_idx = {ch: idx for idx, ch in enumerate(self.chars)}
-        self.idx_to_char = {idx: ch for idx, ch in enumerate(self.chars)}
-
-        # Convert text to indices
-        self.text_indices = [self.char_to_idx[ch] for ch in self.text]
-
-        # Set sequence length
+        
+        self.chars = sorted(set(self.text))
+        self.char2idx = {char: idx for idx, char in enumerate(self.chars)}
+        self.idx2char = {idx: char for idx, char in enumerate(self.chars)}
+        self.text_as_int = [self.char2idx[char] for char in self.text] ## 문자 인덱스 목록 생성
         self.seq_length = 30
-
-        # Create input-target pairs
-        self.data = []
-        for i in range(len(self.text_indices) - self.seq_length):
-            input_seq = self.text_indices[i:i + self.seq_length]
-            target_seq = self.text_indices[i + 1:i + self.seq_length + 1]
-            self.data.append((input_seq, target_seq))
-
+    
+    ## 시퀀스 길이 30의 청크로 데이터 나누기 및 타겟 생성
     def __len__(self):
-        # Return the total number of samples
-        return len(self.data)
+        return len(self.text_as_int) // self.seq_length
 
     def __getitem__(self, idx):
-        # Get the input and target sequences
-        input_seq, target_seq = self.data[idx]
-        return torch.tensor(input_seq, dtype=torch.long), torch.tensor(target_seq, dtype=torch.long)
+        start_idx = idx * self.seq_length
+        end_idx = start_idx + self.seq_length + 1
+        chunk = self.text_as_int[start_idx:end_idx]
+        input_seq = torch.tensor(chunk[:-1], dtype=torch.long)
+        target_seq = torch.tensor(chunk[1:], dtype=torch.long)
+        return input_seq, target_seq
+
+
 
 if __name__ == '__main__':
-    # Test code to verify implementations
-    dataset = Shakespeare('shakespeare_train.txt')
-    print(f'Dataset size: {len(dataset)}')
-    print('Sample input and target:')
-    for i in range(5):
+    dataset = Shakespeare(input_file='shakespeare_train.txt')
+    for i in range(3):
         input_seq, target_seq = dataset[i]
-        input_text = ''.join([dataset.idx_to_char[idx.item()] for idx in input_seq])
-        target_text = ''.join([dataset.idx_to_char[idx.item()] for idx in target_seq])
-        print(f'Input: {input_text}')
-        print(f'Target: {target_text}\n')
+
+
