@@ -100,3 +100,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# 모델 학습이 완료된 후에 모델 가중치 저장
+model_path = 'model.pth'
+torch.save(model.state_dict(), model_path)
+print(f"Model saved to {model_path}")

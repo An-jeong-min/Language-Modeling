@@ -71,6 +71,7 @@ hidden_size = 128
 output_size = input_size  # 문자 집합 크기와 동일
 num_layers = 6
 
+
 # 모델 초기화 및 가중치 로드
 model = CharLSTM(input_size, hidden_size, output_size, num_layers).to(device)
 model_path = 'model.pth'  # 모델 파일 경로
