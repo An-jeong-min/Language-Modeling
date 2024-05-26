@@ -7,59 +7,41 @@ import torch
 import torch.nn as nn
 
 class CharRNN(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, n_layers=1):
+    """ Vanilla RNN Model """
+    def __init__(self, vocab_size, hidden_dim, n_layers):
         super(CharRNN, self).__init__()
-        self.input_size = input_size
-        self.hidden_size = hidden_size
-        self.output_size = output_size
+        self.hidden_dim = hidden_dim
         self.n_layers = n_layers
+        self.embed = nn.Embedding(vocab_size, hidden_dim)
+        self.rnn = nn.RNN(hidden_dim, hidden_dim, n_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_dim, vocab_size)
 
-        # Define RNN layer
-        self.rnn = nn.RNN(input_size, hidden_size, n_layers, batch_first=True)
-        # Define output layer
-        self.fc = nn.Linear(hidden_size, output_size)
-
-    def forward(self, input, hidden):
-        # Forward pass through RNN layer
-        output, hidden = self.rnn(input, hidden)
-        # Reshape output to fit the fully connected layer
-        output = output.contiguous().view(-1, self.hidden_size)
-        # Forward pass through fully connected layer
-        output = self.fc(output)
-        # Reshape output to match the expected shape
-        output = output.view(input.size(0), -1, self.output_size)
-        return output, hidden
+    def forward(self, x, hidden):
+        x = self.embed(x)
+        out, hidden = self.rnn(x, hidden)
+        out = self.fc(out.reshape(out.size(0) * out.size(1), out.size(2)))
+        return out, hidden
 
     def init_hidden(self, batch_size, device):
-        hidden = torch.zeros(self.n_layers * 1, batch_size, self.hidden_size).to(device)
-        cell = torch.zeros(self.n_layers * 1, batch_size, self.hidden_size).to(device)
-        return hidden, cell
+        return torch.zeros(self.n_layers, batch_size, self.hidden_dim).to(device)
 
 class CharLSTM(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, n_layers=1):
+    """ LSTM Model """
+    def __init__(self, vocab_size, hidden_dim, output_size, n_layers):  # 수정된 생성자
         super(CharLSTM, self).__init__()
-        self.input_size = input_size
-        self.hidden_size = hidden_size
-        self.output_size = output_size
+        self.hidden_dim = hidden_dim
         self.n_layers = n_layers
+        self.embed = nn.Embedding(vocab_size, hidden_dim)
+        self.lstm = nn.LSTM(hidden_dim, hidden_dim, n_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_dim, output_size)  # 수정된 output_size
 
-        # Define LSTM layer
-        self.lstm = nn.LSTM(input_size, hidden_size, n_layers, batch_first=True)
-        # Define output layer
-        self.fc = nn.Linear(hidden_size, output_size)
-
-    def forward(self, input, hidden):
-        # Forward pass through LSTM layer
-        output, hidden = self.lstm(input, hidden)
-        # Reshape output to fit the fully connected layer
-        output = output.contiguous().view(-1, self.hidden_size)
-        # Forward pass through fully connected layer
-        output = self.fc(output)
-        # Reshape output to match the expected shape
-        output = output.view(input.size(0), -1, self.output_size)
-        return output, hidden
+    def forward(self, x, hidden):
+        x = self.embed(x)
+        out, hidden = self.lstm(x, hidden)
+        out = self.fc(out.reshape(out.size(0) * out.size(1), out.size(2)))
+        return out, hidden
 
     def init_hidden(self, batch_size, device):
-        # Initialize hidden state with zeros
-        return (torch.zeros(self.n_layers, batch_size, self.hidden_size).to(device), 
-                torch.zeros(self.n_layers, batch_size, self.hidden_size).to(device))
+        device = next(self.parameters()).device
+        return (torch.zeros(self.n_layers, batch_size, self.hidden_dim).to(device), 
+                torch.zeros(self.n_layers, batch_size, self.hidden_dim).to(device))
