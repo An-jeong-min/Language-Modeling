@@ -42,20 +42,20 @@
 
 #### 모델 학습 결과
 1) 
-    batch_size = 32
-    seq_length = 30
-    hidden_size = 128
-    num_layers = 1
-    num_epochs = 5
-    learning_rate = 0.002
-    model_type = 'lstm'
-    device = torch.device('cpu')
+    batch_size = 32  
+    seq_length = 30  
+    hidden_size = 128  
+    num_layers = 1  
+    num_epochs = 5  
+    learning_rate = 0.002  
+    model_type = 'lstm'  
+    device = torch.device('cpu')  
     
-Epochs:  20%|██        | 1/5 [05:44<22:56, 344.14s/it]Epoch 1/5, Training Loss: 1.5358, Validation Loss: 1.3917
-Epochs:  40%|████      | 2/5 [11:42<17:36, 352.27s/it]Epoch 2/5, Training Loss: 1.3527, Validation Loss: 1.3286
-Epochs:  60%|██████    | 3/5 [16:34<10:50, 325.11s/it]Epoch 3/5, Training Loss: 1.3044, Validation Loss: 1.2913
-Epochs:  80%|████████  | 4/5 [21:50<05:21, 321.35s/it]Epoch 4/5, Training Loss: 1.2770, Validation Loss: 1.2718
-Epochs: 100%|██████████| 5/5 [26:59<00:00, 323.81s/it]Epoch 5/5, Training Loss: 1.2596, Validation Loss: 1.2609
+Epochs:  20%|██        | 1/5 [05:44<22:56, 344.14s/it]Epoch 1/5, Training Loss: 1.5358, Validation Loss: 1.3917  
+Epochs:  40%|████      | 2/5 [11:42<17:36, 352.27s/it]Epoch 2/5, Training Loss: 1.3527, Validation Loss: 1.3286  
+Epochs:  60%|██████    | 3/5 [16:34<10:50, 325.11s/it]Epoch 3/5, Training Loss: 1.3044, Validation Loss: 1.2913  
+Epochs:  80%|████████  | 4/5 [21:50<05:21, 321.35s/it]Epoch 4/5, Training Loss: 1.2770, Validation Loss: 1.2718  
+Epochs: 100%|██████████| 5/5 [26:59<00:00, 323.81s/it]Epoch 5/5, Training Loss: 1.2596, Validation Loss: 1.2609  
 
 ![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/82762934-743e-4711-a9eb-a15bfcbfa36e)
 
