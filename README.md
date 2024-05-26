@@ -37,47 +37,16 @@
 #
 
 ### 모델 학습 결과
-1) 
-    batch_size = 32  
-    seq_length = 30  
-    hidden_size = 128  
-    num_layers = 1  
-    num_epochs = 5  
-    learning_rate = 0.002  
-    model_type = 'lstm'  
-    device = torch.device('cpu')  
-    
-Epochs:  20%|██        | 1/5 [05:44<22:56, 344.14s/it]Epoch 1/5, Training Loss: 1.5358, Validation Loss: 1.3917  
-Epochs:  40%|████      | 2/5 [11:42<17:36, 352.27s/it]Epoch 2/5, Training Loss: 1.3527, Validation Loss: 1.3286  
-Epochs:  60%|██████    | 3/5 [16:34<10:50, 325.11s/it]Epoch 3/5, Training Loss: 1.3044, Validation Loss: 1.2913  
-Epochs:  80%|████████  | 4/5 [21:50<05:21, 321.35s/it]Epoch 4/5, Training Loss: 1.2770, Validation Loss: 1.2718  
-Epochs: 100%|██████████| 5/5 [26:59<00:00, 323.81s/it]Epoch 5/5, Training Loss: 1.2596, Validation Loss: 1.2609  
-
-![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/82762934-743e-4711-a9eb-a15bfcbfa36e)
-
-
-2)
-    batch_size = 32  
-    seq_length = 30  
-    hidden_size = 128  
-    num_layers = 6  
-    num_epochs = 10  
-    learning_rate = 0.002  
-    model_type = 'lstm'  # 'rnn' or 'lstm'  
-    device = torch.device('cpu')
-
-Epochs:  10%|█         | 1/10 [27:28<4:07:20, 1648.92s/it]Epoch 1/10, Training Loss: 1.8353, Validation Loss: 1.5060  
-Epochs:  20%|██        | 2/10 [53:39<3:33:40, 1602.61s/it]Epoch 2/10, Training Loss: 1.4218, Validation Loss: 1.3550  
-Epochs:  30%|███       | 3/10 [1:21:27<3:10:29, 1632.81s/it]Epoch 3/10, Training Loss: 1.3017, Validation Loss: 1.2575  
-Epochs:  40%|████      | 4/10 [1:49:41<2:45:41, 1656.87s/it]Epoch 4/10, Training Loss: 1.2124, Validation Loss: 1.1815  
-Epochs:  50%|█████     | 5/10 [2:18:00<2:19:20, 1672.04s/it]Epoch 5/10, Training Loss: 1.1397, Validation Loss: 1.1228  
-Epochs:  60%|██████    | 6/10 [2:45:55<1:51:31, 1672.96s/it]Epoch 6/10, Training Loss: 1.0821, Validation Loss: 1.0752  
-Epochs:  70%|███████   | 7/10 [3:14:54<1:24:43, 1694.60s/it]Epoch 7/10, Training Loss: 1.0358, Validation Loss: 1.0282  
-Epochs:  80%|████████  | 8/10 [3:41:46<55:36, 1668.42s/it]  Epoch 8/10, Training Loss: 0.9989, Validation Loss: 1.0056  
-Epochs:  90%|█████████ | 9/10 [4:07:18<27:05, 1625.81s/it]Epoch 9/10, Training Loss: 0.9691, Validation Loss: 0.9742  
-Epochs: 100%|██████████| 10/10 [4:32:43<00:00, 1636.34s/it]Epoch 10/10, Training Loss: 0.9446, Validation Loss: 0.9567  
-
-
-![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/6b83b4d3-8c48-4e8d-8f23-6110a5d24cca)
+1) CharRNN
+    input_file = 'shakespeare_train.txt'  
+    batch_size = 128  
+    hidden_size = 256  
+    num_layers = 2  
+    learning_rate = 0.001  
+    num_epochs = 20
+   
+ 
+3)
+   
   
 이 과제에서는 Shakespeare 데이터셋을 사용하여 문자 단위 언어 모델을 구축하고, vanilla RNN과 LSTM의 성능을 비교하며, 다양한 온도로 문자를 생성해보는 경험을 합니다. 이를 통해 언어 모델의 작동 원리를 이해하고, 모델의 성능을 개선하는 방법을 학습할 수 있습니다.
