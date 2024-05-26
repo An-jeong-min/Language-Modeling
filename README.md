@@ -1,4 +1,4 @@
-# README.md
+# Language Modeling
 
 ## 인공신경망과 딥러닝 과제 #3
 ## 기계정보공학과 24510091 안정민
