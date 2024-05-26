@@ -126,21 +126,20 @@ W
 
 #### 2) CharLSTM 결과
 
-Temperature: 0.5
+- Temperature: 0.5  
 " To be, or not to be, that is the question:
 Than see for his more the lied aroung for as the sind,
 And they purtory his many must he say by his"  
 생성된 텍스트는 상대적으로 안정적이고 일관된 양상을 보입니다. 각 문자의 확률 분포가 보다 일반적인 분포에 가깝기 때문에 문장이 자연스럽고 읽기 쉽습니다. 하지만 너무 일반적일 수 있어서 특별한 내용이나 창의성이 부족할 수 있습니다.
 
-Temperature: 1.0
-"To be, or not to be, that is the question:
+- Temperature: 1.0  
+'To be, or not to be, that is the question:
 The poirs Hose how I ward,
 This both the purnow I saided towers, let not childed bebeal Senting,
-I "  
+I '  
 온도가 조금 높은 경우, 생성된 텍스트는 좀 더 다양한 문자를 포함하고 있습니다. 이는 텍스트가 더 다양한 방식으로 변형되고 새로운 아이디어나 표현이 등장할 가능성이 있음을 의미합니다. 하지만 가끔은 문맥에서 벗어난 이상한 문구나 잘못된 단어들이 등장할 수 있습니다.
 
-
-Temperature: 1.5
+- Temperature: 1.5  
 "To be, or not to be, that is the question:
 Hlelse
 My strasm
