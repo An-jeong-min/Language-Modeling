@@ -56,4 +56,15 @@ Epochs: 100%|██████████| 5/5 [26:59<00:00, 323.81s/it]Epoch 
 ![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/82762934-743e-4711-a9eb-a15bfcbfa36e)
 
 
+2)
+    batch_size = 32  
+    seq_length = 30  
+    hidden_size = 128  
+    num_layers = 6  
+    num_epochs = 10  
+    learning_rate = 0.002  
+    model_type = 'lstm'  # 'rnn' or 'lstm'  
+    device = torch.device('cpu')  
+
+  
 이 과제에서는 Shakespeare 데이터셋을 사용하여 문자 단위 언어 모델을 구축하고, vanilla RNN과 LSTM의 성능을 비교하며, 다양한 온도로 문자를 생성해보는 경험을 합니다. 이를 통해 언어 모델의 작동 원리를 이해하고, 모델의 성능을 개선하는 방법을 학습할 수 있습니다.
