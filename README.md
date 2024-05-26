@@ -2,6 +2,8 @@
 ### 인공신경망과 딥러닝 과제 #3
 ### 기계정보공학과 24510091 안정민
 
+
+
 ### 과제 설명
 
 이 과제에서는 Shakespeare 데이터셋을 사용하여 문자 단위 언어 모델을 구축합니다. 구축할 언어 모델은 "many-to-many" 형태의 순환 신경망입니다. 자세한 설명은 [Karpathy의 글](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)의 "Character-Level Language Models" 섹션을 참고하세요.
