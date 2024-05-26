@@ -21,8 +21,64 @@
 
 ### 2) 파일 설명
 #### dataset.py
-이 코드는 Shakespeare 데이터셋을 불러와 문자 사전을 생성하고, 이를 인덱스로 변환한 후 시퀀스 길이 30의 입력-타겟 쌍으로 데이터를 나누어 torch.utils.data.Dataset 클래스를 상속받아 데이터셋을 정의합니다. 각 시퀀스는 입력과 타겟으로 구성되며, 모델 학습에 사용됩니다. __len__과 __getitem__ 메소드를 구현하여 데이과
-#### 1) CharRNN 결과
+이 코드는 Shakespeare 데이터셋을 불러와 문자 사전을 생성하고, 이를 인덱스로 변환한 후 시퀀스 길이 30의 입력-타겟 쌍으로 데이터를 나누어 torch.utils.data.Dataset 클래스를 상속받아 데이터셋을 정의합니다. 각 시퀀스는 입력과 타겟으로 구성되며, 모델 학습에 사용됩니다. __len__과 __getitem__ 메소드를 구현하여 데이터셋 크기와 인덱스에 따른 데이터를 반환합니다.
+
+#### model.py
+이 코드는 `CharRNN`과 `CharLSTM` 두 가지 문자 기반 신경망 모델을 정의합니다. `CharRNN` 클래스는 간단한 순환 신경망(RNN)을 구현하며, `CharLSTM` 클래스는 장단기 메모리 네트워크(LSTM)를 구현합니다. 각 모델은 입력 시퀀스를 임베딩하여 순환 레이어(RNN 또는 LSTM)를 통과시킨 후, 출력 레이어에서 예측 결과를 생성합니다. `init_hidden` 메소드는 주어진 배치 크기와 디바이스에 맞게 초기 은닉 상태를 생성합니다.
+
+#### main.py
+이 코드는 셰익스피어 데이터셋을 이용하여 문자 수준의 언어 모델을 훈련하는 스크립트입니다. `train` 함수는 모델을 훈련하고, `validate` 함수는 검증 데이터로 모델의 성능을 평가합니다. `main` 함수는 데이터셋을 로드하고, 훈련 및 검증 세트로 분할한 후, 지정된 RNN 또는 LSTM 모델을 선택하여 훈련을 수행합니다. 훈련 과정에서 손실 값을 기록하고, 각 에포크(epoch)마다 훈련 및 검증 손실을 출력합니다. 마지막으로, 훈련 및 검증 손실의 변화를 시각화하여 플롯을 생성합니다.
+
+#### generate.py
+이 코드는 훈련된 문자 수준 언어 모델을 사용하여 주어진 시드 문자와 온도 매개변수에 따라 새로운 문자를 생성합니다. `generate` 함수는 시드 문자를 받아 모델의 출력을 바탕으로 새로운 문자를 순차적으로 생성합니다. 온도 매개변수는 확률 분포를 조절하여 출력의 다양성을 조절합니다. 입력 시드 문자를 인덱스로 변환하고 모델에 전달하여 출력 로짓을 얻고, 이를 소프트맥스 함수로 변환하여 다음 문자를 샘플링합니다. 이 과정을 반복하여 지정된 길이의 문자를 생성합니다.
+
+#
+### 3) 모델 학습 결과
+#### A. CharRNN
+    input_file = 'shakespeare_train.txt'  
+    batch_size = 128  
+    hidden_size = 256  
+    num_layers = 2  
+    learning_rate = 0.001  
+    num_epochs = 20
+
+    Epoch 1, Train Loss: 2.5935, Validation Loss: 2.1706  
+    Epoch 2, Train Loss: 2.0706, Validation Loss: 1.9588  
+    Epoch 3, Train Loss: 1.9171, Validation Loss: 1.8457  
+    Epoch 4, Train Loss: 1.8248, Validation Loss: 1.7686  
+    Epoch 5, Train Loss: 1.7626, Validation Loss: 1.7197  
+    Epoch 6, Train Loss: 1.7172, Validation Loss: 1.6860  
+    Epoch 7, Train Loss: 1.6802, Validation Loss: 1.6536  
+    Epoch 8, Train Loss: 1.6522, Validation Loss: 1.6325  
+    Epoch 9, Train Loss: 1.6276, Validation Loss: 1.6135  
+    Epoch 10, Train Loss: 1.6040, Validation Loss: 1.5940
+
+![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/caae0dfb-e771-4093-b42a-9f6469233a4f)
+
+
+#### B. CharLSTM
+    input_file = 'shakespeare_train.txt'  
+    batch_size = 128  
+    hidden_size = 256  
+    num_layers = 2  
+    learning_rate = 0.001  
+    num_epochs = 10
+
+    Epoch 1, Train Loss: 3.0445, Validation Loss: 2.4835  
+    Epoch 2, Train Loss: 2.2962, Validation Loss: 2.1407  
+    Epoch 3, Train Loss: 2.0608, Validation Loss: 1.9608  
+    Epoch 4, Train Loss: 1.9191, Validation Loss: 1.8485  
+    Epoch 5, Train Loss: 1.8276, Validation Loss: 1.7768  
+    Epoch 6, Train Loss: 1.7598, Validation Loss: 1.7195  
+    Epoch 7, Train Loss: 1.7097, Validation Loss: 1.6775  
+    Epoch 8, Train Loss: 1.6687, Validation Loss: 1.6484  
+    Epoch 9, Train Loss: 1.6350, Validation Loss: 1.6232  
+    Epoch 10, Train Loss: 1.6051, Validation Loss: 1.6000  
+
+   ![image](https://github.com/An-jeong-min/Language-Modeling/assets/131511349/55090548-cd8d-48c3-9cc1-d78e2791e97c)
+
+### 4) 문자 생성 결과   
+#### A. CharRNN 결과
 
 - **Temperature: 0.5**
 
@@ -56,7 +112,7 @@
 텍스트가 매우 창의적이지만, 일관성이나 논리성이 떨어집니다. 단어들이 무작위로 보이며, 실제로 의미 있는 문장을 형성하지 못합니다.
 
 
-#### 2) CharLSTM 결과
+#### B. CharLSTM 결과
 
 - **Temperature: 0.5**
 
