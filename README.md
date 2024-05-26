@@ -41,15 +41,16 @@
 
 
 #### 모델 학습 결과
-
-batch_size = 32
+1) 
+    batch_size = 32
     seq_length = 30
     hidden_size = 128
     num_layers = 1
     num_epochs = 5
     learning_rate = 0.002
-    model_type = 'lstm'  # 'rnn' or 'lstm'
+    model_type = 'lstm'
     device = torch.device('cpu')
+    
 Epochs:  20%|██        | 1/5 [05:44<22:56, 344.14s/it]Epoch 1/5, Training Loss: 1.5358, Validation Loss: 1.3917
 Epochs:  40%|████      | 2/5 [11:42<17:36, 352.27s/it]Epoch 2/5, Training Loss: 1.3527, Validation Loss: 1.3286
 Epochs:  60%|██████    | 3/5 [16:34<10:50, 325.11s/it]Epoch 3/5, Training Loss: 1.3044, Validation Loss: 1.2913
